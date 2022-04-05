@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,11 +15,11 @@ will need to remove all invalid times, e.g., there are times in the file that st
 clearly invalid. Maximum time allowed is 23:59:59. 
 */
 public class SearchTrip {
-	List<StopTime> listOfStopTimes = new ArrayList<StopTime>();
+	static List<StopTime> listOfStopTimes = new ArrayList<StopTime>();
 	
 	
 	
-	public void searchForTrips(String arrivalTime) throws IOException {
+	public static void searchForTrips(String arrivalTime) throws IOException {
 		
 		List<StopTime> matchedStopTimes = new ArrayList<StopTime>();
 		
@@ -60,7 +62,7 @@ public class SearchTrip {
 		
 	}
 	
-	public List<StopTime> matchArrivalTime(String arrivalTime) {
+	public static List<StopTime> matchArrivalTime(String arrivalTime) {
 		List<StopTime> matchedStopTimes = new ArrayList<StopTime>();
 		for(int i =0; i< listOfStopTimes.size(); i++) {
 			if(arrivalTime.equals(listOfStopTimes.get(i).arrival_time) ) {
@@ -72,7 +74,7 @@ public class SearchTrip {
 	
 	
 	// this function creates an array list of all the valid entries
-	public List<StopTime> getListOfValidTrips() throws IOException {
+	public static List<StopTime> getListOfValidTrips() throws IOException {
 		
 		
 		
@@ -101,8 +103,19 @@ public class SearchTrip {
             
             String departure_time = variables[2].replaceAll("\\s+", "0");
 
-            if(validTimeFormat(arrival_time) != true && validTimeFormat(departure_time) != true) {
-            	continue; // skip this iteration of the loop if this is not a valid time as then it wont be added to the list
+            
+            // check if times are valid and if not break out of the iteration of the loop with continue and then go on to next line of input file
+            try
+            {
+                
+                LocalTime.parse(arrival_time, DateTimeFormatter.ofPattern("H:mm:ss"));
+                LocalTime.parse(departure_time, DateTimeFormatter.ofPattern("H:mm:ss"));
+            }
+            catch (Exception e) 
+            {
+                
+               
+                continue;
             }
             
 
@@ -149,41 +162,7 @@ public class SearchTrip {
 	}
 	
 	
-	static private boolean validTimeFormat(String givenArrivalTime)
-    {
-        //The input must be equal to hh:mm:ss
-        if (givenArrivalTime == null || givenArrivalTime.length() != 8)
-        {
-            return false; // not valid input 
-        }
-        //Validate time format
-        if (givenArrivalTime.charAt(2) == ':' && givenArrivalTime.charAt(5) == ':')
-        {
-            String hh = givenArrivalTime.substring(0, 2); //substring end index is exclusive and start index is inclusive
-            String mm = givenArrivalTime.substring(3, 5);
-            String ss = givenArrivalTime.substring(6, 8);
-            int hours, minutes, seconds;
-            try
-            {
-                hours = Integer.parseInt(hh);
-                minutes = Integer.parseInt(mm);
-                seconds = Integer.parseInt(ss);
-                if (hours > -1 && hours < 24 && // checking to see if hours and minutes form a valid time
-                    minutes > -1 && minutes < 60 &&
-                    seconds > -1 && seconds < 60)
-                {
-                    return true;
-                }
-            }
-            //If an exception occurs when parsing the the strings as integers, the input is not in a valid time format.
-            catch (NumberFormatException nfe)
-            {
-                return false;
-            }
-        }
-        return false;
-    }
-	
+		
 	
 	
 	

@@ -1,3 +1,14 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
 
 public class StopTime {
 	//intialising all of the variables in the file stop_times.txt
@@ -24,5 +35,8 @@ public class StopTime {
         this.drop_off_type = drop_off_type;
         this.shape_dist_travelled = shape_dist_travelled;
     }
+    
+   
+    
 
 }
