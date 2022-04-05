@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import java.util.List;
+
 /* 3. Searching for all trips with a given arrival time, returning full details of all trips matching the
 criteria (zero, one or more), sorted by trip id
 Arrival time should be provided by the user as hh:mm:ss. When reading in stop_times.txt file you
@@ -12,19 +14,21 @@ clearly invalid. Maximum time allowed is 23:59:59.
 */
 public class SearchTrip {
 	
-	public ArrayList<StopTime> matchedTrips(String filename) throws IOException {
-		int totalEntries = 0; // don't know if i will need this value
-		int numberOfValidEntries = 0;
-		ArrayList<StopTime> stopTimes = new ArrayList<StopTime>();
+	int numberOfValidEntries;
+	
+	public List<StopTime> matchedTrips(String filename) throws IOException {
+		
+		numberOfValidEntries = 0;
+		List<StopTime> listOfStopTimes = new ArrayList<StopTime>();
 		
 		//Buffered reader reads each line from file and stop_times
-		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		BufferedReader bufReader = new BufferedReader(new FileReader(filename));
         //ignore first line
-        reader.readLine();
+        bufReader.readLine();
      
         String thisLine;
         
-        while ((thisLine = reader.readLine()) != null)
+        while ((thisLine = bufReader.readLine()) != null)
         {
         	
         	
@@ -69,31 +73,25 @@ public class SearchTrip {
             //if there are only 8 elements in the array then the shape_dist_travelled does not exist for that line in the stop_times file
             String shape_dist_travelled = (variables.length == 8) ? null : variables[8];
 
-            //Get a list of all the stopTime objects in the HashMap with the new arrival time from the latest line.
-            //If none exist previously, then make a new array of them that can be used by future lines.
-            List<stopTime> newList = stopTimes.getOrDefault(arrival_time, new ArrayList<>());
+            
 
-            //Now we can create the stopTime object since we have all the necessary parameters and we have completed the error-checking for the time values.
-            stopTime stopTimeToAdd = new stopTime(trip_id,arrival_time,departure_time,stop_id,stop_Sequence,stop_headsign,pickup_type,drop_off_type,shape_dist_travelled);
+            //add all the variables to the stop time
+            StopTime stopTime = new StopTime(trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type,shape_dist_travelled);
 
-            //Now we can add this new stopTime object to the list, of all the stopTime objects with the same arrival time.
-            newList.add(stopTimeToAdd);
+            //add the stopTime objects to the array list
+            listOfStopTimes.add(stopTime);
 
-            //Now we can add the list of stopTime objects back into the HashMap, with the key as the arrival_time.
-            //This allows us to carry out requests for individual arrival times later on, and get stopTime objects that match the query.
-            stopTimes.put(arrival_time, newList);
+            
 
-            //Update variables for the progress bar
-            counterForProgressBar++;
-            numberOfValidEntries++;
+            
+            
+            numberOfValidEntries++; // increment the number of valid entries
 
-            //We only want to update the progress bar for every 1% of progress, so the function remains speedy.
-            //If we updated the progress bar after every line, the I/0 required would slow down the function.
-            if (counterForProgressBar % ((int)totalNumberOfLinesInFile/100) == 0)
-            {
-                    progressBar.updateProgressBar(counterForProgressBar, totalNumberOfLinesInFile);
-            }
+            
         }
+        bufReader.close();
+        
+        return listOfStopTimes;
 	}
 	
 	
@@ -134,9 +132,7 @@ public class SearchTrip {
 	
 	
 	
-	public void invalidTrips() {
-		
-	}
+	
 	
 	
 	
