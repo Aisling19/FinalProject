@@ -55,8 +55,9 @@ public class StringSearch {
 			
 			String thisLine;
 			while ((thisLine = buffReader.readLine()) != null) {
-				String[] variables = thisLine.split(",");
 				
+				
+				String [] variables = thisLine.split(",");
 				String stop_name = moveWords(variables[2]);
 				String stop_id = (variables[0]);
 				String stop_code = (variables[1].equals("")) ? "null" : (variables[1]);
@@ -67,9 +68,11 @@ public class StringSearch {
 				String stop_url = (variables[7].equals("")) ? "null" : variables[7];
 				String location_type= (variables[8]);
 				//String parent_station = variables[9];
+
+				Stop stop = new Stop(stop_id,  stop_code,  stop_name,stop_desc,  stop_lat, 
+			stop_long,  zone_id,  stop_url,  location_type );
 				
-				Stop stop = new Stop(stop_id,  stop_code,  stop_name, stop_desc,  stop_lat, 
-						 stop_long,  zone_id,  stop_url,  location_type);
+				
 				
 				
 				
@@ -102,21 +105,26 @@ public class StringSearch {
 		List<String> matchList = new ArrayList<String>();
 		
 		matchList = TST.keysWithPrefix(searchInput);
-		
-		for (int i = 0; i < matchList.size(); i++) {
-			searchedStop = TST.get(matchList.get(i));
-			System.out.println("The following stops have the string " + searchInput + " in the stop Name");
-			System.out.println("   Stop ID: " + searchedStop.stop_id
-        			+ "\n   Stop Code: " + searchedStop.stop_code
-        			+ "\n   Stop Name: " + searchedStop.stop_name
-        			+ "\n   Stop Desc: " + searchedStop.stop_desc
-        			+ "\n   Stop Latitude: " + searchedStop.stop_lat
-        			+ "\n   Stop Longitude: " + searchedStop.stop_long
-        			+ "\n   Zone ID: " + searchedStop.zone_id
-        			+ "\n   Stop URL: " + searchedStop.stop_url
-        			+ "\n   Location Type: " + searchedStop.location_type);
-        			//+ "\n   Parent Station: " + searchedStop.parent_station);
-        	System.out.println("-----------------");
+		if(matchList.size()>0) {
+			for (int i = 0; i < matchList.size(); i++) {
+				searchedStop = TST.get(matchList.get(i));
+				
+				System.out.println("The following stops have the string " + searchInput + " in the stop Name");
+				System.out.println("   Stop ID: " + searchedStop.stop_id
+	        			+ "\n   Stop Code: " + searchedStop.stop_code
+	        			+ "\n   Stop Name: " + searchedStop.stop_name
+	        			+ "\n   Stop Desc: " + searchedStop.stop_desc
+	        			+ "\n   Stop Latitude: " + searchedStop.stop_lat
+	        			+ "\n   Stop Longitude: " + searchedStop.stop_long
+	        			+ "\n   Zone ID: " + searchedStop.zone_id
+	        			+ "\n   Stop URL: " + searchedStop.stop_url
+	        			+ "\n   Location Type: " + searchedStop.location_type);
+	        			
+	        	System.out.println("-----------------");
+		}
+		}
+		else {
+				System.out.println("There is no stop available that matches your input. Sorry");
 			
 		}
 		

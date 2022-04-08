@@ -19,7 +19,7 @@ public class BusStop {
 		this.location_type = location_type;
 		this.stop_lat = stop_lat;
 		this.stop_long = stop_long;
-		parent_station = parent_station;
+		this.parent_station = parent_station;
 	}
 
 }

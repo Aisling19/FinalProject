@@ -28,7 +28,7 @@ public class SearchTrip {
 		
 		
 		//If there are no matching trips
-        if (matchedStopTimes == null)
+        if (matchedStopTimes == null) // this is not running for some reason
         {
             System.out.println("Unfortunately there are no trips with the given arrival time of " + arrivalTime);
             return;
@@ -45,19 +45,27 @@ public class SearchTrip {
         // convert the sorted array back to an array list of objects
         matchedStopTimes = Arrays.asList(sortedStopTimes);
         
-        System.out.println("The trips that match with the inputed arrival time of " + arrivalTime + "are as follows:");
-        for(int i =0; i < matchedStopTimes.size(); i++) {
-        	System.out.println("   Trip id: " + matchedStopTimes.get(i).trip_id
-        			+ "\n   Arrival Time: " + matchedStopTimes.get(i).arrival_time
-        			+ "\n   Departure Time: " + matchedStopTimes.get(i).departure_time
-        			+ "\n   Stop id: " + matchedStopTimes.get(i).stop_id
-        			+ "\n   Stop Sequence: " + matchedStopTimes.get(i).stop_sequence
-        			+ "\n   Stop Headsign: " + matchedStopTimes.get(i).stop_headsign
-        			+ "\n   Pickup Type: " + matchedStopTimes.get(i).pickup_type
-        			+ "\n   Dropoff Type: " + matchedStopTimes.get(i).drop_off_type
-        			+ "\n   Shape of Distance Travelled: " + matchedStopTimes.get(i).shape_dist_travelled);
-        	System.out.println("-----------------");
+        if(matchedStopTimes.size() > 0) {
+        	System.out.println("The trips that match with the inputed arrival time of " + arrivalTime + " are as follows:");
+            for(int i =0; i < matchedStopTimes.size(); i++) {
+            	System.out.println("   Trip id: " + matchedStopTimes.get(i).trip_id
+            			+ "\n   Arrival Time: " + matchedStopTimes.get(i).arrival_time
+            			+ "\n   Departure Time: " + matchedStopTimes.get(i).departure_time
+            			+ "\n   Stop id: " + matchedStopTimes.get(i).stop_id
+            			+ "\n   Stop Sequence: " + matchedStopTimes.get(i).stop_sequence
+            			+ "\n   Stop Headsign: " + matchedStopTimes.get(i).stop_headsign
+            			+ "\n   Pickup Type: " + matchedStopTimes.get(i).pickup_type
+            			+ "\n   Dropoff Type: " + matchedStopTimes.get(i).drop_off_type
+            			+ "\n   Shape of Distance Travelled: " + matchedStopTimes.get(i).shape_dist_travelled);
+            	System.out.println("-----------------");
+            }
+        	
         }
+        else {
+        	System.out.println("There are no trips that match the inputed arrival time. Sorry");
+        }
+        
+        
         
 		
 	}

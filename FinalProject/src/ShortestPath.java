@@ -23,7 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
 
 public class ShortestPath {
 	
@@ -49,7 +49,7 @@ public class ShortestPath {
 			while((thisLine = bufReader.readLine()) != null) {
 				
 				String [] stopInformation = thisLine.split(",");
-				String parentStation = ""; // there are no parent stations in stops.txt
+				String parentStation = ""; 
 				int stopId = -1;
 				int stopCode = -1;
 				int locationType = -1;
@@ -60,7 +60,7 @@ public class ShortestPath {
 				if(stopInformation.length == 10 && !stopInformation[9].equals("") && !stopInformation[9].equals(" "))
                     parentStation = stopInformation[9];
 				
-                if(!stopInformation[0].equals("") && !stopInformation[0].equals(" ")) // if there is a value for stop id which is first value in file
+                if(!stopInformation[0].equals("") && !stopInformation[0].equals(" ")) 
                     stopId = Integer.parseInt(stopInformation[0]);
                 
                 if(!stopInformation[1].equals("") && !stopInformation[1].equals(" "))
@@ -100,7 +100,7 @@ public class ShortestPath {
 		
 		listOfStopTimes = SearchTrip.getListOfValidTrips();
 		
-//		try {
+		try {
 			BufferedReader bufReader2 = new BufferedReader(new FileReader("transfers.txt"));
 	        //ignore first line
 	        bufReader2.readLine();
@@ -138,51 +138,72 @@ public class ShortestPath {
                 
 			}
 			
-//		}catch(Exception e){
-//			System.out.println("Unable to read transfers file");
-//		}
+		}catch(Exception e){
+			System.out.println("Unable to read transfers file");
+		}
+		
+		
 	}
 	
 	
 	
 	public static void findShortestPath(int start, int destination) throws IOException {
 		readFile();
+		boolean validStart = false;
+		boolean validDestination = false;
+		for(int i =0; i < listOfStops.size(); i++) {
+			if(listOfStops.get(i).stop_id == start) {
+				validStart = true;
+			}
+			if(listOfStops.get(i).stop_id == start) {
+				validDestination = true;
+			}
+		}
 		
-		for(int i = 0; i < listOfStopTimes.size() -1; i++) {
-			if(listOfStopTimes.get(i).trip_id == listOfStopTimes.get(i + 1).trip_id) {
-				weight = 1;
-				DirectedEdge directedEdge = new DirectedEdge(listOfStopTimes.get(i).stop_id, listOfStopTimes.get(i + 1).stop_id, weight);
+		if( validStart =! false && validDestination == true) {
+			for(int i = 0; i < listOfStopTimes.size() -1; i++) {
+				if(listOfStopTimes.get(i).trip_id == listOfStopTimes.get(i + 1).trip_id) {
+					weight = 1;
+					DirectedEdge directedEdge = new DirectedEdge(listOfStopTimes.get(i).stop_id, listOfStopTimes.get(i + 1).stop_id, weight);
+					edges.add(directedEdge);
+				}
+			}
+			for( int i = 0; i < listOfStopTransfers.size(); i++) {
+				
+				
+				if( listOfStopTransfers.get(i).transfer_type == 0) {
+					weight = 2;//2 if it comes from transfers.txt with transfer type 0 (which is immediate transfer possible)
+				}
+				else {
+					weight = listOfStopTransfers.get(i).min_transfer_time / 100;//for transfer type 2 the cost is the minimum transfer time divided by 100.
+
+				}
+				DirectedEdge directedEdge = new DirectedEdge(listOfStopTransfers.get(i).from_stop_id, listOfStopTransfers.get(i).to_stop_id, weight);
 				edges.add(directedEdge);
 			}
-		}
-		for( int i = 0; i < listOfStopTransfers.size(); i++) {
 			
+			EdgeWeightedDigraph edgeWeightedDigraph = new EdgeWeightedDigraph(edges.size());
 			
-			if( listOfStopTransfers.get(i).transfer_type == 0) {
-				weight = 2;//2 if it comes from transfers.txt with transfer type 0 (which is immediate transfer possible)
+			for(int i=0; i < edges.size(); i++) {
+				edgeWeightedDigraph.addEdge(edges.get(i));
+			}
+			
+			DijkstraSP shortestPath = new DijkstraSP(edgeWeightedDigraph, start);
+			
+			if(shortestPath.hasPathTo(destination)) {
+				System.out.println("The shortest path from " + start + " to "+ destination + " is " + shortestPath.distTo(destination) );
 			}
 			else {
-				weight = listOfStopTransfers.get(i).min_transfer_time / 100;//for transfer type 2 the cost is the minimum transfer time divided by 100.
-
+				System.out.println( "There is no path between " + start + " and " + destination);
 			}
-			DirectedEdge directedEdge = new DirectedEdge(listOfStopTransfers.get(i).from_stop_id, listOfStopTransfers.get(i).to_stop_id, weight);
-			edges.add(directedEdge);
-		}
-		
-		EdgeWeightedDigraph edgeWeightedDigraph = new EdgeWeightedDigraph(edges.size());
-		
-		for(int i=0; i < edges.size(); i++) {
-			edgeWeightedDigraph.addEdge(edges.get(i));
-		}
-		
-		DijkstraSP shortestPath = new DijkstraSP(edgeWeightedDigraph, start);
-		
-		if(shortestPath.hasPathTo(destination)) {
-			System.out.println("The shortest path from " + start + " to "+ destination + " is " + shortestPath.distTo(destination) );
+			
 		}
 		else {
-			System.out.println( "There is no path between " + start + " and " + destination);
+			System.out.println("One or both of these stop id's do not exist.");
+			
 		}
+		
+		
 	}
 	
 	
