@@ -14,12 +14,9 @@ public class MainInterface {
 
 	public static void main(String[] args) throws IOException
     {
-		System.out.println("Welcome to the Bus Management System for the Vancouver bus routes."
-				+ "\n The following interface has four functions:" 
-				+ "\n    1. To find the shortest path between two bus stops"
-				+ "\n    2. To search for a bus stop by full name or by the first few characters in the name"
-				+ "\n    3. To search for all trips with a given arrival time"
-				+ "\n    4. An optiom to exit the programme");
+		Title.printHeader();
+		
+		Title.printSelection();
 		
 		//We can take in the number and then call on the class or function that performs that operation
 		Scanner scanner = new Scanner(System.in);
@@ -27,36 +24,110 @@ public class MainInterface {
 		boolean dontQuit = true;
 		
 		while(dontQuit) {
+			System.out.println("/ / / / / / / / / / / / / / / / / / / / / / / / / ");
 			System.out.println("Enter the number of the function you would like to run:");
-			String inputFunction = scanner.next();
 			
-			if(inputFunction == "1") {
-				//do the functionality for function 1
-			}
 			
-			else if(inputFunction == "2") {
-				//do the functionality for function 2
-			}
-			
-			else if(inputFunction == "3") {
-				boolean runFunction3 = true;
-				while(runFunction3) {
-					System.out.println("You have selected function 3."
-							+ "\n Please enter the arrival time you would like to search for in the format hh:mm:ss:");
-					String arrivalTime = scanner.next();
-					if(validInputArrivalTime(arrivalTime) == true) {
-						SearchTrip.searchForTrips(arrivalTime);
+			if(scanner.hasNextInt()) {
+				int inputFunction = scanner.nextInt();
+				
+				if(inputFunction == 1) {
+					boolean runFunction1 = true;
+					while(runFunction1) {
+						System.out.println("This function will find the shortest path between two bus stops");
+						System.out.println("\nPlease enter the bus stop's ID you are departing from:");
+						
+						if(scanner.hasNextInt()) {
+							int start = scanner.nextInt();
+							
+							System.out.println("Please enter your trips destination bus stop's ID:");
+							if(scanner.hasNextInt());{
+								int destination = scanner.nextInt();
+								ShortestPath.findShortestPath(start, destination);
+							
+							}
+							
+						}
+						else 
+						{
+							System.out.println("The starting or destination bus stop ID is invalid. ");
+						}
+						
+						
+						
+						
+						
+						System.out.println("");
+						System.out.println("---------------------------------------------------------------------------");
+						System.out.println("\nIf you would like to exit this function type exit, if not type continue:");
+						String answer = scanner.next();
+						if(answer.equalsIgnoreCase("exit")) {
+							runFunction1 = false;
+						}
+						
 					}
-					else {
-						System.out.print("Input is invalid. Must be of the format hh:mm:ss");
+					
+				}
+				
+				else if(inputFunction == 2) {
+					boolean runFunction2 = true;
+					while(runFunction2) {
+						System.out.println("Please enter the stop you want to search for:");
+						String searchInput = scanner.next();
+		                searchInput += scanner.nextLine();
+		                searchInput = searchInput.toUpperCase();
+		                StringSearch.searchString(searchInput);
+		                System.out.println("");
+						System.out.println("-------------------------------------------------------------------------");
+						System.out.println("\nIf you would like to exit this function type exit, if not type continue:");
+						String answer = scanner.next();
+						if(answer.equalsIgnoreCase("exit")) {
+							runFunction2 = false;
+						}
+					}
+					
+					
+					
+	                
+					
+				}
+				
+				else if(inputFunction == 3) {
+					boolean runFunction3 = true;
+					while(runFunction3 ) {
+						System.out.println("Please enter the arrival time you would like to search for in the format hh:mm:ss:");
+						String arrivalTime = scanner.next();
+						if(validInputArrivalTime(arrivalTime) == true) {
+							SearchTrip.searchForTrips(arrivalTime);
+						}
+						else {
+							System.out.print("Input is invalid. Must be of the format hh:mm:ss");
+						}
+						System.out.println("");
+						System.out.println("-------------------------------------------------------------------------");
+						System.out.println("\nIf you would like to exit this function type exit, if not type continue:");
+						String input = scanner.next();
+						if(input.equalsIgnoreCase("exit")) {
+							runFunction3 = false;
+						}
 					}
 				}
+				else if(inputFunction == 4) {
+					System.out.println("You have quit the Vancouver bus Management service, enjoy your day:)");
+					dontQuit = false;
+				}
+				else {
+					System.out.println("You have inputed an incorrect function. Please try again.");
+					
+					
+				}
+				
 			}
-			else if(inputFunction == "4") {
-				System.out.println("You have quit the Vancouver bus Management service, enjoy your day:)");
-			}
+			
 			else {
-				System.out.println("You have not inputed a correct function. Please try again.");
+				System.out.println("You have inputed an incorrect function. Please try again.");
+				
+				scanner.next();
 			}
 		}
 		scanner.close();
@@ -87,6 +158,9 @@ public class MainInterface {
                     seconds > -1 && seconds < 60)
                 {
                     return true;
+                }
+                else {
+                	return false;
                 }
             }
             //If there is an exception the input arrival time is not in the correct format
