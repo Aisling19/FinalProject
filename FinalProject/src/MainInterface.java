@@ -25,7 +25,7 @@ public class MainInterface {
 		
 		while(dontQuit) {
 			System.out.println("/ / / / / / / / / / / / / / / / / / / / / / / / / ");
-			System.out.println("Enter the number of the function you would like to run:");
+			System.out.println("\nEnter the number of the function you would like to run:");
 			
 			
 			if(scanner.hasNextInt()) {
