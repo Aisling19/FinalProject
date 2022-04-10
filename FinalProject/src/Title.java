@@ -13,7 +13,7 @@ public class Title {
 		System.out.println("");
 		System.out.println("");
 		System.out.println("");
-		System.out.println("||| The following function has four options |||");
+		System.out.println("||| The following system has four options |||");
 		System.out.println("");
 		System.out.println("");
 		System.out.println("\n 1. To find the shortest path between two bus stops");

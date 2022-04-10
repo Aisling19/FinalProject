@@ -30,19 +30,23 @@ public class MainInterface {
 			
 			if(scanner.hasNextInt()) {
 				int inputFunction = scanner.nextInt();
+				//scanner.nextLine();
 				
 				if(inputFunction == 1) {
 					boolean runFunction1 = true;
 					while(runFunction1) {
-						System.out.println("This function will find the shortest path between two bus stops");
+						System.out.println("\nThis function will find the shortest path between two bus stops");
 						System.out.println("\nPlease enter the bus stop's ID you are departing from:");
 						
 						if(scanner.hasNextInt()) {
 							int start = scanner.nextInt();
+							//scanner.nextLine();
+							
 							
 							System.out.println("Please enter your trips destination bus stop's ID:");
 							if(scanner.hasNextInt());{
 								int destination = scanner.nextInt();
+								//scanner.nextLine();
 								ShortestPath.findShortestPath(start, destination);
 							
 							}
@@ -51,6 +55,8 @@ public class MainInterface {
 						else 
 						{
 							System.out.println("The starting or destination bus stop ID is invalid. ");
+							String input = scanner.next();
+							
 						}
 						
 						
@@ -60,6 +66,7 @@ public class MainInterface {
 						System.out.println("");
 						System.out.println("---------------------------------------------------------------------------");
 						System.out.println("\nIf you would like to exit this function type exit, if not type continue:");
+						//scanner.next();
 						String answer = scanner.next();
 						if(answer.equalsIgnoreCase("exit")) {
 							runFunction1 = false;
@@ -80,6 +87,7 @@ public class MainInterface {
 		                System.out.println("");
 						System.out.println("-------------------------------------------------------------------------");
 						System.out.println("\nIf you would like to exit this function type exit, if not type continue:");
+						
 						String answer = scanner.next();
 						if(answer.equalsIgnoreCase("exit")) {
 							runFunction2 = false;

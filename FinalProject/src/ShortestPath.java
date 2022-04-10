@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -190,8 +191,12 @@ public class ShortestPath {
 			
 			DijkstraSP shortestPath = new DijkstraSP(edgeWeightedDigraph, start);
 			
+			
 			if(shortestPath.hasPathTo(destination)) {
 				System.out.println("The shortest path from " + start + " to "+ destination + " is " + shortestPath.distTo(destination) );
+				List<DirectedEdge> directedEdge = new ArrayList<DirectedEdge>(shortestPath.pathTo(destination));
+				Collections.reverse(directedEdge);
+				System.out.println("The path is as follows " + directedEdge);
 			}
 			else {
 				System.out.println( "There is no path between " + start + " and " + destination);
